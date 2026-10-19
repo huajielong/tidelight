@@ -6,6 +6,8 @@
 
 采用 [MIT 许可证](LICENSE)。Netlify 部署步骤、服务端密钥、公开访问、每日/月调用配额和费用边界见 [DEPLOYMENT.md](DEPLOYMENT.md)。复现开发过程见 [协作指南](浏览器游戏协作复现指南.md)。
 
+公开仓库：[huajielong/tidelight](https://github.com/huajielong/tidelight)。2026-10-19 发布状态：GitHub 已开源；Netlify 已创建项目，但 CLI 无法访问该项目，线上部署和匿名访问验收尚未完成。
+
 下文 `.logs/` 是原作者本机的历史验证记录，默认不随公开仓库发布；可复用浏览器脚本已迁移至 `scripts/browser/`。
 
 ## 运行
