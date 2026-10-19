@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#071927" />
+    <meta name="description" content="《潮光 TIDELIGHT》是一款在月色湿地中收集萤火、躲避影涡的单屏街机游戏。" />
+    <title>潮光 · TIDELIGHT</title>
+    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="./assets/moonlit-lagoon.png" as="image" type="image/png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div id="app" data-phase="title">
+      <div class="scene-wash" aria-hidden="true"></div>
+
+      <header class="hud" aria-label="游戏状态">
+        <div class="brand-lockup" aria-label="潮光 TIDELIGHT">
+          <span class="brand-mark" aria-hidden="true">✦</span>
+          <div><strong>潮光</strong><span>TIDELIGHT</span></div>
+        </div>
+
+        <div class="hud-stats">
+          <div class="hud-stat hud-score">
+            <span>得分</span>
+            <strong id="score-value">000000</strong>
+          </div>
+          <div class="hud-stat hud-combo" id="combo-stat">
+            <span><b id="combo-count">0</b> 连击</span>
+            <strong id="combo-value">×1</strong>
+            <div class="combo-track" aria-hidden="true"><i id="combo-meter"></i></div>
+          </div>
+          <div class="hud-stat hud-time">
+            <span>月落倒计时</span>
+            <strong id="time-value">01:15</strong>
+          </div>
+          <div class="hud-stat hud-lives">
+            <span>灯火</span>
+            <strong id="lives-value" aria-label="三点生命">● ● ●</strong>
+          </div>
+        </div>
+
+        <div class="hud-actions">
+          <button id="mute-button" class="icon-button" type="button" aria-label="静音" aria-pressed="false" title="静音 (M)">
+            <svg class="sound-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4 6 8H3v8h3l5 4Z"/><path d="M15 8c2 2 2 6 0 8M18 5c4 4 4 10 0 14"/></svg>
+            <svg class="sound-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4 6 8H3v8h3l5 4ZM16 9l6 6M22 9l-6 6"/></svg>
+          </button>
+          <button id="pause-button" class="icon-button" type="button" aria-label="暂停" title="暂停 (P)" hidden>
+            <span aria-hidden="true">Ⅱ</span>
+          </button>
+        </div>
+      </header>
+
+      <div id="stage-shell" class="stage-shell">
+        <div id="stage">
+          <canvas id="game-canvas" width="1600" height="900" tabindex="0" aria-label="潮光游戏水域，按方向键或 WASD 引航，空格冲刺" aria-describedby="game-help">
+            驾驶灯舟收集萤火、躲开影涡，在 75 秒内尽量提高分数。游戏需要支持 Canvas 的浏览器。
+          </canvas>
+          <div id="toast" class="toast" role="status" aria-live="polite"></div>
+          <div class="tide-status" aria-live="polite"><span>潮汐导演</span><strong id="tide-label">初航 · 观察水面</strong></div>
+        </div>
+      </div>
+
+      <footer class="control-bar">
+        <div class="play-hints" id="game-help">
+          <p class="keyboard-hint"><span><kbd>WASD</kbd> / 方向键引航</span><span><kbd>P</kbd> 暂停</span><span><kbd>M</kbd> 静音</span></p>
+          <p class="drag-hint">按住水面拖动引航，松手停下</p>
+          <p class="rule-hint">拾取萤火 · 避开影涡 · 冲刺不能抵挡伤害</p>
+          <p class="enemy-legend"><span>● 追光：追逐</span><span>▲ 伏潮：预警突进</span><span>◆ 守灯：巡游金光</span></p>
+          <p id="orientation-hint">↻ 横屏视野更舒展，竖屏也可按住水面拖动游玩。</p>
+        </div>
+        <div class="dash-controls">
+          <div class="meter-wrap" aria-label="冲刺冷却">
+            <div class="meter-label"><span>流光冲刺</span><strong id="dash-status">就绪</strong></div>
+            <div class="meter-track" aria-hidden="true"><i id="dash-meter"></i></div>
+            <small>加速闪避，无无敌效果</small>
+          </div>
+          <button id="dash-button" class="dash-button" type="button" aria-label="流光冲刺，空格键" aria-describedby="dash-status" disabled>
+            <span aria-hidden="true">✦</span><span>冲刺</span><kbd>SPACE</kbd>
+          </button>
+        </div>
+      </footer>
+
+      <main class="screen-layer">
+        <section id="title-screen" class="screen screen-title is-visible" aria-labelledby="game-title">
+          <div class="title-copy">
+            <p class="eyebrow">A MOONLIT ARCADE RUN</p>
+            <h1 id="game-title"><span>潮光</span><em>TIDELIGHT</em></h1>
+            <p class="tagline">驾一叶灯舟，趁月落之前<br class="title-break" />拾回湿地里散失的微光。</p>
+            <div class="feature-line" aria-label="游戏目标"><span>收集萤火</span><i aria-hidden="true"></i><span>避开影涡</span><i aria-hidden="true"></i><span>坚持 75 秒</span></div>
+            <button id="start-button" class="primary-button" type="button"><span>启 航</span><b aria-hidden="true">→</b></button>
+            <div class="start-hint">
+              <p><kbd>WASD</kbd> / 方向键移动　<kbd>SPACE</kbd> 冲刺</p>
+              <p>鼠标或触屏按住水面拖动引航。三点灯火，冲刺不免伤。</p>
+            </div>
+            <p class="personal-best">你的最高纪录 <strong id="title-best-score">0</strong></p>
+          </div>
+          <section class="challenge-panel" aria-labelledby="challenge-heading">
+            <div class="challenge-heading"><div><p class="eyebrow">WRITE YOUR TIDE</p><h2 id="challenge-heading">一句话，造一场潮汐</h2></div><span id="ai-status" class="source-badge">检查服务…</span></div>
+            <label for="challenge-prompt">想怎样航行？</label>
+            <textarea id="challenge-prompt" maxlength="200" rows="2" placeholder="例如：轻松起步，极光水面，最后冲向金色航路">轻松起步，极光水面，最后冲向金色航路</textarea>
+            <div class="challenge-presets" aria-label="挑战灵感">
+              <button type="button" data-prompt="新手练习，轻柔节奏，不要伏潮者">新手练习</button>
+              <button type="button" data-prompt="困难，全程追逐，暖色水面">追逐之夜</button>
+              <button type="button" data-prompt="极光水面，更多金色萤火，环形航路">金色诱惑</button>
+            </div>
+            <button id="generate-challenge" class="generate-button" type="button">生成挑战预览 <span aria-hidden="true">✧</span></button>
+            <p id="challenge-notice" class="challenge-notice" role="status">生成只发生在开局前。航行中不会等待网络。</p>
+            <div class="challenge-preview" aria-label="当前挑战预览">
+              <div class="preview-heading"><h3 id="challenge-title">月下初航</h3><span id="challenge-source" class="source-badge">预设</span></div>
+              <p id="challenge-description"></p>
+              <p id="challenge-meta" class="challenge-meta"></p>
+              <p id="challenge-enemies"></p>
+              <ol id="challenge-events" class="event-timeline" aria-label="四次潮汐预告"></ol>
+              <p class="preview-note">受伤会获得喘息，连击会吸引航路。最终节奏会随你的表现调整。</p>
+              <div class="challenge-seed"><span>种子 <b id="challenge-seed"></b> · 75 秒 / 3 点灯火</span><button id="reroll-seed" type="button">换个种子</button></div>
+              <button id="start-challenge-button" class="generate-button" type="button">用此挑战启航 <span aria-hidden="true">→</span></button>
+            </div>
+            <details id="challenge-library">
+              <summary>收藏与挑战码 <span>同配置、同种子可重玩</span></summary>
+              <div class="library-actions"><button id="save-challenge" type="button">收藏当前挑战</button><button id="export-challenge" type="button">复制挑战码</button></div>
+              <label for="saved-challenges">本机收藏（最多 8 个）</label>
+              <div class="library-actions"><select id="saved-challenges" aria-label="本机收藏"></select><button id="load-challenge" type="button">载入</button></div>
+              <label for="challenge-code">导入 / 导出挑战码</label>
+              <textarea id="challenge-code" rows="2" maxlength="3000" placeholder="TL1.…" spellcheck="false"></textarea>
+              <button id="import-challenge" type="button">载入挑战码</button>
+            </details>
+            <p class="challenge-privacy">点击生成时，仅将这句话发送给模型；不要输入个人信息或密钥。未接通模型时会明确显示本地关键词生成。</p>
+          </section>
+        </section>
+
+        <section id="pause-screen" class="screen screen-dialog" aria-labelledby="pause-title" hidden>
+          <div class="dialog-copy">
+            <p class="eyebrow">THE WATER WAITS</p>
+            <h2 id="pause-title">潮汐暂停</h2>
+            <p>微光仍在水面上等你。<br />时间与潮汐，暂时停在这一刻。</p>
+            <div class="dialog-actions">
+              <button id="resume-button" class="primary-button" type="button"><span>继续航行</span><b aria-hidden="true">→</b></button>
+              <button id="pause-restart-button" class="text-button" type="button">重新开始</button>
+              <button id="pause-title-button" class="text-button" type="button">更换挑战</button>
+            </div>
+            <p class="pause-hint"><kbd>P</kbd> 继续 · <kbd>M</kbd> 切换声音</p>
+          </div>
+        </section>
+
+        <section id="gameover-screen" class="screen screen-dialog" aria-labelledby="gameover-title" hidden>
+          <div class="dialog-copy gameover-copy">
+            <p class="eyebrow" id="gameover-kicker">DAWN FOUND YOU</p>
+            <h2 id="gameover-title">这一夜，灯舟归岸</h2>
+            <div class="result-grid">
+              <div><span>本局得分</span><strong id="final-score">0</strong></div>
+              <div><span>最高连击</span><strong id="final-combo">0</strong></div>
+              <div><span>收集萤火</span><strong id="final-collected">0</strong></div>
+              <div><span>航行结果</span><strong id="final-survival">灯舟归岸</strong></div>
+            </div>
+            <p class="personal-best">你的最高纪录 <strong id="best-score">0</strong></p>
+            <p id="result-message">每一点微光，都让湿地亮了一些。</p>
+            <p id="result-challenge" class="result-challenge"></p>
+            <div class="dialog-actions"><button id="restart-button" class="primary-button" type="button"><span>同一潮汐再挑战</span><b aria-hidden="true">↻</b></button><button id="result-title-button" class="text-button" type="button">更换挑战</button></div>
+          </div>
+        </section>
+      </main>
+
+      <div id="status-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+      <div id="asset-error" class="asset-error" role="alert" hidden>部分美术资源未能载入，游戏仍可继续。</div>
+    </div>
+    <noscript>《潮光》需要启用 JavaScript 才能运行。</noscript>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

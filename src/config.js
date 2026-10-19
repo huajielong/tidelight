@@ -1,0 +1,23 @@
+/** Gameplay rules and rendering budgets, in logical pixels and seconds. */
+export const CONFIG = Object.freeze({
+  width: 1600, height: 900, roundSeconds: 75, initialLives: 3,
+  maxStep: 1 / 120, frameDeltaCap: 0.05,
+  playerRadius: 28, playerSpeed: 260, playerAcceleration: 1800, playerDrag: 8,
+  dashMultiplier: 1.9, dashDuration: 0.22, dashCooldown: 2.4,
+  damageInvulnerability: 1.2, damageKnockback: 420,
+  comboWindow: 2.5, comboStep: 3, maxMultiplier: 5,
+  initialSparks: 9, maxSparks: 16, sparkRadius: 13, goldRadius: 16,
+  sparkValue: 100, goldValue: 250, goldChance: 0.12,
+  sparkMargin: 70, sparkSafeDistance: 165, sparkSeparation: 60, sparkHazardDistance: 80,
+  sparkInitialDelay: 0.45, sparkCapacityBase: 9, sparkCapacityDifficulty: 2,
+  sparkIntervalBase: 0.82, sparkIntervalDifficulty: 0.12, sparkIntervalMin: 0.32,
+  initialHazards: 3, maxHazards: 7, hazardRadius: 27, hazardRadiusVariation: 8,
+  hazardSpeed: 88, hazardSpeedVariation: 42, hazardSafeDistance: 240, hazardSeparation: 150,
+  hazardInitialDelay: 5.5, hazardCapacityBase: 2, hazardCapacityDifficulty: 1.4,
+  hazardIntervalBase: 6.2, hazardIntervalMin: 2.4,
+  hazardSpeedScaleBase: 0.82, hazardSpeedScaleDifficulty: 0.18,
+  hazardCurveMax: 0.24, hazardCurveDistance: 2200,
+  difficultyBase: 1, difficultyIncreaseMax: 2.5, difficultySeconds: 25,
+  spawnAttempts: 24, spawnFallbackSegments: 12,
+  maxEvents: 64, maxParticles: 160, maxWakePoints: 30, maxDpr: 2,
+});

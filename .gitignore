@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+.DS_Store
+Thumbs.db
+.pnpm-store/
+.playwright-cli/
+.env
+.env.*
+!.env.example
+.netlify/
+.logs/
