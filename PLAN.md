@@ -349,7 +349,7 @@ window.__TIDELIGHT__ = {
 | M17 开源准备 | 已完成 | MIT、部署维护说明、复现指南和公开浏览器脚本；排除 .env、.netlify、私人 .logs；45 个待提交文件与 14 个构建文件未匹配本机真实密钥。 |
 | M18 云端接口 | 实现并通过本地测试 | Netlify 现代 Functions；同源与体积限制；每 IP 每分钟 5 次；仅 production 允许远程生成。 |
 | M19 持久化额度 | 实现并通过本地测试 | 官方 Postgres 单条原子 UPSERT；100 次/日、1000 次/月；上海日期；请求前预扣、失败计数、数据库故障关闭收费调用。 |
-| M20 发布 | GitHub 已完成；Netlify 阻塞 | 公开仓库 https://github.com/huajielong/tidelight 已推送并核验 PUBLIC / MIT / main；Netlify 项目已创建，CLI 设置环境变量时返回 Project not found，按技能要求暂停该发布流程。没有上传 Key、没有正式部署或匿名访问验收。 |
+| M20 发布 | GitHub 已完成；Netlify 配置完成、待部署 | 公开仓库 https://github.com/huajielong/tidelight 已核验 PUBLIC / MIT / main；后续通过官方环境变量 API 保存并核验 production DeepSeek Key（secret，builds/functions/runtime）、模型及配额。范围扩展经过用户批准，排除 post-processing。尚未正式部署或验收匿名访问。 |
 
 验证：62 项 Node 测试、18 文件语法检查与静态构建通过。新增数据库测试使用本机 Postgres 兼容引擎，包含并发配额、跨日/月和新连接持久性，不等同于公网部署验收。历史浏览器 111 项断言未因本次仅后端修改重新执行；上线后仍需公开页面与一次真实模型生成验收。
 

@@ -6,7 +6,7 @@
 
 1. Fork 本仓库。在 Netlify 中从 GitHub 导入自己的仓库，选择 `main`；使用 Free 套餐，不需要开启付费升级。
 2. `netlify.toml` 定义构建命令 `npm test && npm run check && npm run build`、Node 22、发布目录 `dist` 和 Functions 目录。安装依赖及提交的 SQL 迁移会触发 Netlify Database 配置；数据库属于平台额度消耗，不是无限免费服务。
-3. 在 Netlify 的环境变量中设置 `AI_PROVIDER=deepseek`、`DEEPSEEK_MODEL=deepseek-flash`，并把自己的 `DEEPSEEK_API_KEY` 作为 **production / Functions** 的秘密变量保存。免费套餐若无法选择 scope，保留平台支持的默认范围；不要给变量添加 `PUBLIC_` 或 `VITE_` 前缀。不要上传整个 `.env` 文件或提交真实密钥。
+3. 在 Netlify 的环境变量中设置 `AI_PROVIDER=deepseek`、`DEEPSEEK_MODEL=deepseek-flash`，并把自己的 `DEEPSEEK_API_KEY` 作为 **production** 的秘密变量保存。优先限定 Functions；若套餐不支持此细分范围，应先确认更广权限的风险。本项目经用户批准后实测可保存 secret + builds/functions/runtime；秘密变量不能含 post-processing，不能直接套用包含它的默认所有作用域。保存后核验名称、secret 标记、作用域和上下文，不打印密钥值。不要给变量添加 `PUBLIC_` 或 `VITE_` 前缀，不要上传整个 `.env` 或提交真实密钥。
 4. 建议配置 `AI_DAILY_LIMIT=100`、`AI_MONTHLY_LIMIT=1000`。可以降低或设为 0；程序不会接受高于上述默认上限的值。环境变量变更后重新部署。
 5. 首次正式部署成功后，在 Project configuration → General → Project visibility 中选择 Public。新项目可能默认 Private；部署成功不等于匿名访问已开放。
 6. 匿名打开网站，检查 `/api/challenge/status`，完成一次模型生成及开局，并确认 `/.env`、`/.git/config`、`/scripts/cloud-api.mjs` 均为 404。状态“已配置”不等于真实调用成功；结果 `source=deepseek` 才是模型成功。
