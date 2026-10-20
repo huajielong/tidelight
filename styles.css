@@ -35,6 +35,13 @@ button:disabled { cursor: default; }
   background: #082139 url("./assets/moonlit-lagoon.png") center / cover no-repeat;
 }
 
+/* Netlify's public-site badge occupies the bottom 64px. Keep controls and
+   scrollable dialogs above it without hiding or intercepting the badge. */
+body:has(#nl-badge-frame) #app {
+  height: calc(100vh - 72px);
+  height: calc(100dvh - 72px);
+}
+
 .scene-wash { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(180deg, #031521e8, #031521b8 40%, #031521ed); }
 .hud {
   position: relative;

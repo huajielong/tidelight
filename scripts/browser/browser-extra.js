@@ -79,5 +79,5 @@ async (page) => {
   check(fps.length > 0, 'Live browser frame metrics collected', `median ${fps[Math.floor(fps.length / 2)]} FPS; min ${fps[0]} FPS; Edge desktop only`);
   await page.goto(base + '/');
   await page.waitForFunction(() => !!window.__TIDELIGHT__);
-  return { date: '2026-10-19', assertions: results.length, results, liveSummary: { seconds: live.seconds, endPhase: live.state.phase, fpsMedian: fps[Math.floor(fps.length / 2)], fpsMin: fps[0] } };
+  return { date: new Date().toISOString(), assertions: results.length, results, liveSummary: { seconds: live.seconds, endPhase: live.state.phase, fpsMedian: fps[Math.floor(fps.length / 2)], fpsMin: fps[0] } };
 }

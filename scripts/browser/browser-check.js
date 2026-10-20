@@ -149,5 +149,5 @@ async (page) => {
   check(errors.length === 0 && failedResources.length === 0, 'No runtime errors or failed resources', JSON.stringify({ errors, failedResources }));
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(base + '/'); await ready(page);
-  return { date: '2026-10-19', browser: 'Microsoft Edge via Playwright CLI', assertions: results.length, results, errors, failedResources };
+  return { date: new Date().toISOString(), browser: 'Microsoft Edge via Playwright CLI', assertions: results.length, results, errors, failedResources };
 }
