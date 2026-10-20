@@ -4,13 +4,25 @@
 
 **[在线体验：潮光 TIDELIGHT](https://tidelight-huajielong.netlify.app/)** — 无需登录，打开即可游玩；支持 DeepSeek 一句话生成挑战。
 
+## 游戏实拍
+
+以下截图来自 2026-10-20 的 Netlify 线上版本实测，点击图片可查看原图。
+
+**一句话生成挑战**：输入航行偏好，DeepSeek 生成可预览的主题、难度与潮汐事件；图中为真实生成的「极光初航」。
+
+[![DeepSeek 生成「极光初航」，展示极光主题、潮汐时间线和启航按钮](docs/screenshots/deepseek-challenge.png)](docs/screenshots/deepseek-challenge.png)
+
+**驾驶灯舟收集萤火**：用 WASD / 方向键或拖动水面引航，按 Space 冲刺，避开影涡；每局 75 秒、3 点灯火。
+
+[![潮光实际游戏画面：月色湿地中的灯舟、萤火、影涡与冲刺按钮](docs/screenshots/gameplay-desktop.png)](docs/screenshots/gameplay-desktop.png)
+
 ## 公开部署与开源
 
 采用 [MIT 许可证](LICENSE)。Netlify 部署步骤、服务端密钥、公开访问、每日/月调用配额和费用边界见 [DEPLOYMENT.md](DEPLOYMENT.md)。复现开发过程见 [协作指南](浏览器游戏协作复现指南.md)。
 
 公开仓库：[huajielong/tidelight](https://github.com/huajielong/tidelight)。2026-10-20 已完成 Netlify 正式部署与匿名访问验收，真实 DeepSeek 生成、开局和同种子重玩通过。演示站共用每天 100 次、每月 1,000 次生成额度，额度不足或模型失败时回退本地规则，仍可游玩。Netlify Free 本身也有平台额度，不保证无限免费访问。
 
-下文 `.logs/` 是原作者本机的历史验证记录，默认不随公开仓库发布；可复用浏览器脚本已迁移至 `scripts/browser/`。
+下文 `.logs/` 是原作者本机的历史验证记录，默认不随公开仓库发布；可复用浏览器脚本已迁移至 `scripts/browser/`，精选实测截图位于 `docs/screenshots/`。
 
 ## 运行
 
