@@ -2,11 +2,13 @@
 
 驾驶一叶灯舟，在月落前收集湿地里的萤火、维持连击，并避开追逐光芒的影涡。每局 **75 秒、3 点灯火**。原生 HTML/CSS/Canvas/JavaScript ESM，前端无第三方运行时依赖；Netlify 云端使用官方数据库依赖。
 
+**[在线体验：潮光 TIDELIGHT](https://tidelight-huajielong.netlify.app/)** — 无需登录，打开即可游玩；支持 DeepSeek 一句话生成挑战。
+
 ## 公开部署与开源
 
 采用 [MIT 许可证](LICENSE)。Netlify 部署步骤、服务端密钥、公开访问、每日/月调用配额和费用边界见 [DEPLOYMENT.md](DEPLOYMENT.md)。复现开发过程见 [协作指南](浏览器游戏协作复现指南.md)。
 
-公开仓库：[huajielong/tidelight](https://github.com/huajielong/tidelight)。2026-10-19 发布状态：GitHub 已开源；Netlify 项目和生产环境秘密配置已保存并核验，线上部署和匿名访问验收尚未完成。
+公开仓库：[huajielong/tidelight](https://github.com/huajielong/tidelight)。2026-10-20 已完成 Netlify 正式部署与匿名访问验收，真实 DeepSeek 生成、开局和同种子重玩通过。演示站共用每天 100 次、每月 1,000 次生成额度，额度不足或模型失败时回退本地规则，仍可游玩。Netlify Free 本身也有平台额度，不保证无限免费访问。
 
 下文 `.logs/` 是原作者本机的历史验证记录，默认不随公开仓库发布；可复用浏览器脚本已迁移至 `scripts/browser/`。
 
@@ -88,11 +90,12 @@ node --env-file=.env scripts/serve.mjs --port 4317
 - 两家使用固定官方 HTTPS 地址，不允许浏览器指定地址/密钥/模型。Seed 请求只使用其文档列出的 Schema 关键字；长度、数值范围、事件数量、敌人唯一性仍在双端验证。DeepSeek 的合法 JSON 也不等于合法关卡，必须通过同一规则检查。
 - 远程平台会处理输入描述，**不承诺零数据保留**，请勿输入敏感信息。保留的 OpenAI 分支才使用 Responses `store: false`；此参数不发送给 DeepSeek / Seed。
 
-当前验收：本地全流程和三家平台的模拟成功/失败分支已通过。2026-10-19 已使用用户本机 `.env` 完成一次真实 DeepSeek（`deepseek-flash`）调用，生成结果通过双端校验，预览、开局和同种子重玩正常。Seed 仍只有模拟验证，真实联调需对应密钥和模型 ID。单次成功不代表所有模型/网络条件均已验证；脱敏记录见 `.logs/deepseek-live.md`。
+当前验收：本地全流程和三家平台的模拟成功/失败分支已通过。2026-10-19 完成本地真实 DeepSeek 联调；2026-10-20 又在公开 Netlify 站点完成一次真实 `deepseek-flash` 调用，响应 `source=deepseek`，预览、开局和同种子重玩正常。Seed 仍只有模拟验证，真实联调需对应密钥和模型 ID。单次成功不代表所有模型/网络条件均已验证；本机脱敏记录见 `.logs/deepseek-live.md` 与 `.logs/netlify-live-deployment.md`。
 
 ## 验证
 
 ```powershell
+npm ci
 node --test
 node scripts/check.mjs
 node scripts/build.mjs
@@ -100,14 +103,15 @@ node scripts/build.mjs
 
 构建是可选的，会在 `dist/` 内输出可静态托管的页面、代码和美术资源。`dist/` 是构建产物目录，重新构建会替换其中内容。纯静态托管只能使用本地关键词生成；远程模型需要本仓库 Node 服务或随仓库提供的 Netlify Functions，密钥和服务代码不会进入 `dist/`。
 
-当前通过 **62 项 Node 测试**；此前浏览器回归通过 **111 项断言**，覆盖核心玩法、真实键盘/鼠标/触摸、多视口和模型适配。模型成功/失败分支使用模拟响应；真实本地 HTTP 回退另行验证。测试边界见 `.logs/model-providers.md`。浏览器复测需要已安装 Playwright CLI 及可用浏览器；本机使用 Microsoft Edge：
+当前通过 **62 项 Node 测试**；此前浏览器回归通过 **111 项断言**，覆盖核心玩法、真实键盘/鼠标/触摸、多视口和模型适配。2026-10-20 在已发布站点重新通过 **56 项断言**（核心玩法 37、降级与短时运行 9、托管徽标避让 10），没有页面运行错误。模型适配回归使用模拟响应，真实云端生成单独验收，不混同于模拟测试。浏览器复测需要已安装 Playwright CLI 及可用浏览器；本机使用 Microsoft Edge：
 
 ```powershell
 playwright-cli -s=tidelight open http://localhost:4173/ --browser msedge
-playwright-cli -s=tidelight run-code --filename=scripts/browser-check.js --raw
-playwright-cli -s=tidelight run-code --filename=scripts/browser-extra.js --raw
-playwright-cli -s=tidelight run-code --filename=scripts/browser-ai.js --raw
-playwright-cli -s=tidelight run-code --filename=scripts/browser-providers.js --raw
+playwright-cli -s=tidelight run-code --filename=scripts/browser/browser-check.js --raw
+playwright-cli -s=tidelight run-code --filename=scripts/browser/browser-extra.js --raw
+playwright-cli -s=tidelight run-code --filename=scripts/browser/browser-ai.js --raw
+playwright-cli -s=tidelight run-code --filename=scripts/browser/browser-providers.js --raw
+playwright-cli -s=tidelight run-code --filename=scripts/browser/browser-hosting-badge.js --raw
 playwright-cli -s=tidelight close
 ```
 
@@ -162,4 +166,4 @@ game.setAutoRun(true);    // 使用真实时间；手动 step 前需设回 false
 - `.logs/development.md`：工作、验证与已知限制；截图、浏览器脚本和各阶段日志在同目录。
 - `.logs/imagegen.md`：完整最终提示词、生成方式、保存路径和透明度检查。
 
-基本游玩不需要模型 API 或账号。只有可选的大模型挑战生成需要本机服务端密钥与外网连接；最新联调状态见 `.logs/model-providers.md`，三项玩法实现记录见 `.logs/ai-implementation.md`。
+基本游玩不需要模型 API 或账号。在线演示由服务器提供 DeepSeek 生成，访客无需填写密钥；自行部署或在本机使用大模型时，才需要配置自己的服务端密钥。三项玩法实现记录见本机 `.logs/ai-implementation.md`。

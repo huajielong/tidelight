@@ -347,14 +347,16 @@ window.__TIDELIGHT__ = {
 | 交付项 | 状态 | 验收 |
 | --- | --- | --- |
 | M17 开源准备 | 已完成 | MIT、部署维护说明、复现指南和公开浏览器脚本；排除 .env、.netlify、私人 .logs；45 个待提交文件与 14 个构建文件未匹配本机真实密钥。 |
-| M18 云端接口 | 实现并通过本地测试 | Netlify 现代 Functions；同源与体积限制；每 IP 每分钟 5 次；仅 production 允许远程生成。 |
-| M19 持久化额度 | 实现并通过本地测试 | 官方 Postgres 单条原子 UPSERT；100 次/日、1000 次/月；上海日期；请求前预扣、失败计数、数据库故障关闭收费调用。 |
-| M20 发布 | GitHub 已完成；Netlify 配置完成、待部署 | 公开仓库 https://github.com/huajielong/tidelight 已核验 PUBLIC / MIT / main；后续通过官方环境变量 API 保存并核验 production DeepSeek Key（secret，builds/functions/runtime）、模型及配额。范围扩展经过用户批准，排除 post-processing。尚未正式部署或验收匿名访问。 |
+| M18 云端接口 | 已上线并实测 | Netlify 现代 Functions；同源与体积限制；每 IP 每分钟 5 次；仅 production 允许远程生成。公开状态与真实 DeepSeek 生成均 HTTP 200。 |
+| M19 持久化额度 | 已上线；边界测试通过 | 官方 Postgres 单条原子 UPSERT；100 次/日、1000 次/月；上海日期；请求前预扣、失败计数、数据库故障关闭收费调用。真实云端请求通过配额预扣；并发、跨日/月、耗尽与持久性在本地数据库测试，不人为耗尽生产额度。 |
+| M20 发布 | 已完成（2026-10-20） | 公开仓库 https://github.com/huajielong/tidelight ，MIT / main；公开游戏 https://tidelight-huajielong.netlify.app/ ，匿名访问、真实模型生成、开局和同种子重玩通过。生产 Key 为 secret，builds/functions/runtime，排除 post-processing；不公开环境文件或私人日志。 |
 
-验证：62 项 Node 测试、18 文件语法检查与静态构建通过。新增数据库测试使用本机 Postgres 兼容引擎，包含并发配额、跨日/月和新连接持久性，不等同于公网部署验收。历史浏览器 111 项断言未因本次仅后端修改重新执行；上线后仍需公开页面与一次真实模型生成验收。
+验证：62 项 Node 测试、18 文件语法检查与静态构建通过。历史浏览器回归 111 项断言；2026-10-20 在已发布版本重新通过核心 37、兼容与短时运行 9、徽标避让 10，共 56 项浏览器断言。真实云端 DeepSeek 请求单独通过，预览、开局、同种子重玩正常。数据库边界测试使用本机 Postgres 兼容引擎，不声称已在生产执行并发耗尽测试。
 
 维护与费用：参见 `DEPLOYMENT.md`。Free 是团队有限额度；DeepSeek 单独收费。代码次数上限不是人民币金额硬上限。未开启付费升级或自动充值。
 
 ### 首次实际部署
 
 2026-10-19：通过官方 `netlify init` 将现有项目连接到 GitHub `main`，部署密钥与通知 Hook 均已配置。构建命令沿用测试、检查和构建流程，发布目录为 `dist`。本提交触发首次 Git 自动部署；成功发布和匿名实测后再在 README 增加体验链接。
+
+2026-10-20：提交 `e1d1da8` 推送触发正式发布，用户在控制台保存 Public 后匿名访问成功。首次公网回归发现 Netlify 徽标遮挡冲刺；提交 `1c83116` 为游戏预留 72px 底部空间，保留徽标可见且可点击。确认公开 CSS 已更新后，用全新浏览器会话完成上述 56 项回归，无样式覆盖或强制点击。README 已加入正式体验链接；完整私有记录在 `.logs/netlify-live-deployment.md`。

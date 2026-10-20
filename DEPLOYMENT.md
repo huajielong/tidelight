@@ -2,6 +2,14 @@
 
 本项目采用 MIT 许可证。前端不依赖第三方运行时；Netlify 后端使用官方 `@netlify/database` 存储调用计数。
 
+## 已发布演示
+
+[潮光 TIDELIGHT 在线体验](https://tidelight-huajielong.netlify.app/)（公开，无需登录）。2026-10-20 验证首页及状态接口 HTTP 200，真实 DeepSeek 生成、开局和同种子重玩通过；环境文件、Git 配置、服务端源码及私人日志路径为 404。
+
+项目通过 GitHub `main` 自动部署。纯文档更新可在提交信息中加入 `[skip netlify]`，避免无必要的重新构建；代码更新不能跳过上线验收。
+
+Netlify 可能为新公开项目注入右下角徽标。本项目在徽标存在时预留底部 72px，避免挡住冲刺与可滚动界面；未隐藏徽标或改变平台权限。可复测 `scripts/browser/browser-hosting-badge.js`。若未来徽标尺寸改变，请重新检查留白；也可由项目所有者按 [官方徽标设置说明](https://docs.netlify.com/manage/projects/powered-by-netlify-badge/) 在控制台关闭它，无需修改游戏代码。
+
 ## 部署自己的版本
 
 1. Fork 本仓库。在 Netlify 中从 GitHub 导入自己的仓库，选择 `main`；使用 Free 套餐，不需要开启付费升级。
